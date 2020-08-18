@@ -1,0 +1,12 @@
+; @author Klaas Eikelboom (CiviCooP)
+; @date 18 augustus 2020
+; @license AGPL-3.0
+name = Ilga Tokens
+description = Token functions for the ILGA
+core = 7.x
+version = "7.x-1.1"
+package = Ilga
+dependencies[] = civicrm (>=4.7)
+
+
+

@@ -1,0 +1,34 @@
+<?php
+/*
+ * @author Klaas Eikelboom  <klaas.eikelboom@civicoop.org>
+ * @date 18-Aug-2020
+ * @license  AGPL-3.0
+ */
+function ilga_tokens_token_info() {
+  return [
+    'tokens' => [
+       'current-page' => [
+          'casefield' => [
+            'name' => t('Case Field'),
+            'description' => t('Show a custom field on a case')
+          ]
+       ]
+    ]
+  ];
+}
+
+function ilga_tokens_tokens($type, $tokens, array $data = [], array $options = []) {
+  $replacements = [];
+  if($type == 'current-page'){
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Check token is body_trim
+        case 'casefield':
+          $replacements[$original] = "Success";
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
