@@ -15,7 +15,11 @@ function ilga_tokens_token_info() {
           'casefield' => [
             'name' => t('Case Field'),
             'description' => t('Show a custom field on a case')
-          ]
+          ],
+         'casetext' => [
+           'name' => t('Case Text'),
+           'description' => t('Show a custom field on in a dual line text format')
+         ]
        ]
     ]
   ];
@@ -38,6 +42,9 @@ function ilga_tokens_tokens($type, $tokens, array $data = [], array $options = [
         // Check token is body_trim
         case 'casefield':
           $replacements[$original] = ilga_tokens_helper::instance()->format($fieldId,$params['case1']);
+          break;
+        case 'casetext':
+          $replacements[$original] = ilga_tokens_helper::instance()->formatText($fieldId,$params['case1']);
           break;
       }
     }
