@@ -4,6 +4,10 @@
  * @date 18-Aug-2020
  * @license  AGPL-3.0
  */
+/**
+ * Token configuration
+ * @return \array[][][]
+ */
 function ilga_tokens_token_info() {
   return [
     'tokens' => [
@@ -16,15 +20,24 @@ function ilga_tokens_token_info() {
     ]
   ];
 }
-
+/**
+ * @param $type
+ * @param $tokens
+ * @param array $data
+ * @param array $options
+ *
+ * @return array
+ */
 function ilga_tokens_tokens($type, $tokens, array $data = [], array $options = []) {
   $replacements = [];
+  $params = drupal_get_query_parameters();
   if($type == 'current-page'){
-    foreach ($tokens as $name => $original) {
+    foreach ($tokens as $fieldname => $original) {
+      [$name,$fieldId] = explode(':',$fieldname);
       switch ($name) {
         // Check token is body_trim
         case 'casefield':
-          $replacements[$original] = "Success";
+          $replacements[$original] = ilga_tokens_helper::instance()->format($fieldId,$params['case1']);
           break;
       }
     }

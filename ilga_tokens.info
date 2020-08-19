@@ -8,5 +8,7 @@ version = "7.x-1.1"
 package = Ilga
 dependencies[] = civicrm (>=4.7)
 
+files[] = ilga_tokens_helper.inc
+
 
 
