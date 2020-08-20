@@ -39,7 +39,7 @@ class ilga_tokens_helper {
       $customField = $result = civicrm_api3('CustomField', 'getsingle', [
         'id' => $fieldId,
       ]);
-      return $customField['label'];
+      return "<i>{$customField['label']}</i>";
     } catch (CiviCRM_API3_Exception $ex){
       return false;
     }
