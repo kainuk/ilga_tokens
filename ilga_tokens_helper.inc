@@ -70,6 +70,10 @@ class ilga_tokens_helper {
    * @return string
    */
   public function format($fieldId,$entityId){
+    $fieldId = $this->validateFieldId($fieldId);
+    if(!$fieldId){
+      return "Unknown field $fieldId";
+    }
     return $this->label($fieldId).' : '.$this->displayValue($fieldId,$entityId);
   }
 
@@ -80,10 +84,23 @@ class ilga_tokens_helper {
    * @return string
    */
   public function formatText($fieldId,$entityId){
+    $fieldId = $this->validateFieldId($fieldId);
+    if(!$fieldId){
+      return "Unknown field $fieldId";
+    }
     return $this->label($fieldId).'<br/>'.'<p>'.$this->displayValue($fieldId,$entityId).'</p>';
   }
 
-
+  private function validateFieldId($fieldId) {
+    if(!is_numeric($fieldId)){
+        return CRM_Core_DAO::singleValueQuery('select id from civicrm_custom_field where name=%1',[
+            1=>[$fieldId,'String']
+          ]
+        );
+    } else {
+      return $fieldId;
+    }
+  }
 
 
 }

@@ -35,7 +35,7 @@ function ilga_tokens_token_info() {
 function ilga_tokens_tokens($type, $tokens, array $data = [], array $options = []) {
   $replacements = [];
   $params = drupal_get_query_parameters();
-  if($type == 'current-page'){
+  if($type == 'current-page' && isset($params['case1'])){
     foreach ($tokens as $fieldname => $original) {
       [$name,$fieldId] = explode(':',$fieldname);
       switch ($name) {
