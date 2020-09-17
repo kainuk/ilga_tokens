@@ -20,7 +20,14 @@ function ilga_tokens_token_info() {
            'name' => t('Case Text'),
            'description' => t('Show a custom field on in a dual line text format')
          ]
-       ]
+       ],
+      'submission' => [
+        'contact-hash' => [
+          'name' => t('Webform CiviCRM Contacts Hash'),
+          'description' => t('Creates a hash to enable email login'),
+          'dynamic' => TRUE,
+        ],
+      ],
     ]
   ];
 }
@@ -49,6 +56,33 @@ function ilga_tokens_tokens($type, $tokens, array $data = [], array $options = [
       }
     }
   }
+  if (_webform_civicrm_isWebformSubmission($type, $data)) {
+    $webformSubmissionData = $data['webform-submission'];
+    $contactIdsReplacedTokens = _webform_civicrm_replaceContactHashTokens($tokens, $webformSubmissionData);
+    $replacements = array_merge($replacements, $contactIdsReplacedTokens);
+  }
   return $replacements;
+}
+
+function _webform_civicrm_replaceContactHashTokens($tokens, $webformSubmissionData) {
+  $replacedTokens = [];
+
+  $tokenValues = token_find_with_prefix($tokens, 'contact-hash');
+  if (!$tokenValues) {
+    return $replacedTokens;
+  }
+
+  foreach ($tokenValues as $entityID => $tokenName) {
+    $tokenNewValue = '';
+    if (!empty($webformSubmissionData->civicrm['contact'][$entityID]['id'])) {
+      $contactId = $webformSubmissionData->civicrm['contact'][$entityID]['id'];
+      $tokenNewValue = CRM_Contact_BAO_Contact_Utils::generateChecksum($contactId);;
+    }
+    $replacedTokens[$tokenName] = $tokenNewValue;
+  }
+
+
+
+  return $replacedTokens;
 }
 
